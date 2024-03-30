@@ -65,10 +65,15 @@ class AntiSpoofPredict(Detection):
         model_name = os.path.basename(model_path)
         h_input, w_input, model_type, _ = parse_model_name(model_name)
         self.kernel_size = get_kernel(h_input, w_input,)
-        self.model = MODEL_MAPPING[model_type](conv6_kernel=self.kernel_size).to(self.device)
+        # self.model = MODEL_MAPPING[model_type](conv6_kernel=self.kernel_size).to(self.device)
+        self.model = MODEL_MAPPING[model_type](conv6_kernel=self.kernel_size).cpu()
+
 
         # load model weight
-        state_dict = torch.load(model_path, map_location=self.device)
+        # state_dict = torch.load(model_path, map_location=self.device)
+        
+        state_dict = torch.load(model_path, map_location=torch.device('cpu'))
+
         keys = iter(state_dict)
         first_layer_name = keys.__next__()
         if first_layer_name.find('module.') >= 0:
@@ -80,19 +85,23 @@ class AntiSpoofPredict(Detection):
             self.model.load_state_dict(new_state_dict)
         else:
             self.model.load_state_dict(state_dict)
-        return None
+        return self.model
 
     def predict(self, img, model_path):
         test_transform = trans.Compose([
             trans.ToTensor(),
         ])
         img = test_transform(img)
-        img = img.unsqueeze(0).to(self.device)
+        # img = img.unsqueeze(0).to(self.device)
+        img = img.unsqueeze(0).cpu()
+
         self._load_model(model_path)
         self.model.eval()
         with torch.no_grad():
             result = self.model.forward(img)
+            print("result 1: ",result.shape)
             result = F.softmax(result).cpu().numpy()
+            print("result 2: ",result)
         return result
 
 

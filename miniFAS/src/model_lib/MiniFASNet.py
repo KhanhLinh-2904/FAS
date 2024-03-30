@@ -44,7 +44,9 @@ class Linear_block(Module):
 
     def forward(self, x):
         x = self.conv(x)
+        # 
         x = self.bn(x)
+        # 
         return x
 
 
@@ -225,7 +227,9 @@ class MiniFASNet(Module):
         out = self.conv_45(out)
         out = self.conv_5(out)
         out = self.conv_6_sep(out)
+        # 
         out = self.conv_6_dw(out)
+        # 
         out = self.conv_6_flatten(out)
         if self.embedding_size != 512:
             out = self.linear(out)

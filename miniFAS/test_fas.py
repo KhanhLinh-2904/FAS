@@ -44,16 +44,17 @@ if __name__ == "__main__":
     fn = 0
     fp = 0
 
-    label = 'fake'
+    label = 'real'
     images = os.listdir(dataset)
     for image in tqdm(images):
         img_path = os.path.join(dataset, image)
         img = cv2.imread(img_path)
         threshold = 100
-        if is_low_light(img_path,threshold):
+        if is_low_light(img,threshold):
             print("Yes! Need to llie\n")
-            img = lowlight(img_path)
+            img = lowlight(img)
         # try:
+        cv2.imshow(image,img )
         prediction = predict_two_model(img)
         if prediction == "none":
             print("There is no face here!")

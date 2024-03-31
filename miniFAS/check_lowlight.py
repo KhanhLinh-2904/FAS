@@ -1,8 +1,7 @@
 import cv2
 
-def is_low_light(image_path, threshold=50):
+def is_low_light(image, threshold=50):
     # Load the image
-    image = cv2.imread(image_path)
 
     # Convert the image to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

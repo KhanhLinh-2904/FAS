@@ -21,9 +21,9 @@ from matplotlib import pyplot as plt
 def to_numpy(tensor):
     return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()
 
-def lowlight(image_path):
+def lowlight(data_lowlight):
     scale_factor = 12
-    data_lowlight = Image.open(image_path)
+    # data_lowlight = Image.open(image_path)
     data_lowlight = (np.asarray(data_lowlight)/255.0)
     data_lowlight = torch.from_numpy(data_lowlight).float()
     h=(data_lowlight.shape[0]//scale_factor)*scale_factor

@@ -16,7 +16,7 @@ from load_llie_onnx import lowlight
 warnings.filterwarnings('ignore')
 from load_minifas_onnx import load_fas_onnx
 model_test = AntiSpoofPredict(0)
-dataset ="/home/user/FAS/miniFAS/dataset/Real/"
+dataset ="/home/user/low_light_enhancement/Zero-DCE++/data/result_printed"
  
 # sample = "/home/linhhima/FAS_Thuan/datasets/real/0001_00_00_01_2.jpg"
 
@@ -44,17 +44,17 @@ if __name__ == "__main__":
     fn = 0
     fp = 0
 
-    label = 'real'
+    label = 'fake'
     images = os.listdir(dataset)
     for image in tqdm(images):
         img_path = os.path.join(dataset, image)
         img = cv2.imread(img_path)
         threshold = 100
-        if is_low_light(img,threshold):
-            print("Yes! Need to llie\n")
-            img = lowlight(img)
+        # if is_low_light(img,threshold):
+        #     print("Yes! Need to llie\n")
+        #     img = lowlight(img)
         # try:
-        cv2.imshow(image,img )
+        # cv2.imshow(image,img )
         prediction = predict_two_model(img)
         if prediction == "none":
             print("There is no face here!")
